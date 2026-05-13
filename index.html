@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AISA PYP Exhibition Planner: Animal Testing</title>
+    <style>
+        :root {
+            --primary: #1A365D; /* Professional, academic blue */
+            --primary-light: #2B6CB0;
+            --bg: #F0F4F8;
+            --surface: #FFFFFF;
+            --text-main: #1F2937;
+            --text-muted: #4B5563;
+            --border: #D1D5DB;
+            --focus-ring: rgba(43, 108, 176, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .document-container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: var(--surface);
+            padding: 50px 60px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        header {
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 25px;
+            margin-bottom: 40px;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: var(--primary);
+            margin: 0;
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .subtitle {
+            color: var(--primary-light);
+            font-size: 18px;
+            font-weight: 500;
+            margin-top: 5px;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1.5fr;
+            gap: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="text"] {
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 15px;
+            color: var(--text-main);
+            background-color: #F9FAFB;
+            transition: all 0.2s ease;
+        }
+
+        section {
+            margin-bottom: 45px;
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 22px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: #E5E7EB;
+        }
+
+        .question-block {
+            margin-bottom: 24px;
+            background-color: #FFFFFF;
+            page-break-inside: avoid;
+        }
+
+        .question-block p {
+            font-weight: 600;
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            color: var(--text-main);
+        }
+
+        .hint {
+            display: block;
+            font-size: 13.5px;
+            color: var(--text-muted);
+            margin-top: -6px;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 90px;
+            padding: 15px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 15px;
+            resize: vertical;
+            background-color: #F9FAFB;
+            transition: all 0.2s ease;
+            line-height: 1.5;
+        }
+
+        textarea:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            background-color: #FFFFFF;
+            box-shadow: 0 0 0 3px var(--focus-ring);
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin: 15px 0;
+            background: #F9FAFB;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .profile-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14.5px;
+            color: var(--text-main);
+            cursor: pointer;
+        }
+
+        .profile-item input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .meta-grid {
+                grid-template-columns: 1fr;
+            }
+            .profile-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Print Button Floating */
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 16px 28px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(26, 54, 93, 0.3);
+            transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .print-btn:hover {
+            transform: translateY(-2px);
+            background-color: #122847;
+            box-shadow: 0 6px 25px rgba(26, 54, 93, 0.4);
+        }
+
+        .print-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background-color: white;
+                padding: 0;
+            }
+            .document-container {
+                box-shadow: none;
+                padding: 0;
+                max-width: 100%;
+            }
+            .print-btn {
+                display: none;
+            }
+            textarea {
+                border: 1px solid #9CA3AF;
+                background-color: transparent;
+                resize: none;
+                overflow: hidden;
+            }
+            input[type="text"] {
+                border: 1px solid #9CA3AF;
+                background-color: transparent;
+            }
+            @page {
+                margin: 20mm;
+                size: A4;
+            }
+            /* Prevent orphan headers */
+            h2 {
+                page-break-after: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="print-btn" onclick="window.print()">
+        <svg viewBox="0 0 24 24">
+            <path d="M6 9V2h12v7"></path>
+            <path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"></path>
+            <path d="M6 14h12v8H6z"></path>
+        </svg>
+        Download as PDF
+    </button>
+
+    <div class="document-container">
+        <header>
+            <div class="header-top">
+                <div>
+                    <h1>PYP Exhibition Planner</h1>
+                    <div class="subtitle">AISA Grade 5 Inquiry Guide</div>
+                </div>
+            </div>
+            <div class="meta-grid">
+                <div class="input-group">
+                    <label>Group Members</label>
+                    <input type="text" placeholder="Enter student names...">
+                </div>
+                <div class="input-group">
+                    <label>Central Issue</label>
+                    <input type="text" value="Animal Testing">
+                </div>
+                <div class="input-group">
+                    <label>Target SDG</label>
+                    <input type="text" placeholder="e.g., Goal 12...">
+                </div>
+            </div>
+        </header>
+
+        <section>
+            <h2>1. Introductions & Group Dynamics</h2>
+            
+            <div class="question-block">
+                <p>Mentor Introduction: Why is your mentor excited to work with you on this topic?</p>
+                <span class="hint">Take a moment to get to know each other before diving into the work!</span>
+                <textarea class="auto-resize" placeholder="Our mentor shared that..."></textarea>
+            </div>
+
+            <div class="question-block">
+                <p>Group Reflection: How will we use the Learner Profile traits of being Reflective and Open-Minded as a team?</p>
+                <span class="hint">As we start this journey, how will we listen to each other's ideas and reflect on our teamwork?</span>
+                <textarea class="auto-resize" placeholder="We will be open-minded by... We will be reflective by..."></textarea>
+            </div>
+        </section>
+
+        <section>
+            <h2>2. Tuning In & Building Knowledge</h2>
+            
+            <div class="question-block">
+                <p>The Issue vs. The Goal: What is the specific problem, and what is the ultimate goal?</p>
+                <span class="hint">Remember: The issue is the problem (e.g., "Starvation") and the goal is what we want to achieve (e.g., "Zero Hunger"). Clear this up before you begin!</span>
+                <textarea class="auto-resize" placeholder="The issue is... The goal is..."></textarea>
+            </div>
+
+            <div class="question-block">
+                <p>What initially drew your group to the topic of animal testing?</p>
+                <textarea class="auto-resize" placeholder="Type your answer here..."></textarea>
+            </div>
+
+            <div class="question-block">
+                <p>When you hear the phrase "animal testing," what is the very first image or thought that comes to mind?</p>
+                <textarea class="auto-resize" placeholder="Type your answer here..."></textarea>
+            </div>
+
+            <div class="question-block">
+                <p>What do you already know for a fact, and what might be a misconception?</p>
+                <span class="hint">List your facts and assumptions. Your mentor will help you understand complex ideas and spot any misconceptions (things you think are true, but might not be) early on!</span>
+                <textarea class="auto-resize" placeholder="Type your answer here..."></textarea>
+            </div>
+            
+            <div class="question-block">
+                <p>Global Impact: Which Sustainable Development Goal (SDG) does this connect to?</p>
+                <span class="hint">Tip: Check out the UN's SDG Comics to help you understand the global impact of this goal in a fun, visual way!</span>
+                <textarea class="auto-resize" placeholder="Type your answer here..."></textarea>
+            </div>
+        </section>
+
+        <section>
+            <h2>3. Widening the Lens (Perspective)</h2>
+            
+            <div class="question-block">
+                <p>If we were to look at this issue from the perspective of a scientist developing life-saving medicine, what might they say?</p>
+                <textarea class="auto-resize" placeholder="Type your answer here..."></textarea>
+            </div>
+
+            <div class="question-block">
+                <p>How might a cosmetics company explain their reasons for testing on animals?</p>
+                <textarea class="auto-resize" placeholder="Type your answer here..."></textarea>
+            </div>
+
+            <div class="question-block">
+                <p>Who else is involved in this issue besides the animals and the scientists?</p>
+                <span class="hint">Think about consumers, lawmakers, companies developing alternative testing tech, etc.</span>
+                <textarea class="auto-resize" placeholder="Type your answer here..."></textarea>
+            </div>
+        </section>
+
+        <section>
+            <h2>4. Digging into the "How" and "Why" (Causation & Form)</h2>
+            
+            <div class="question-block">
+                <p>What exactly are products being tested for?</p>
+                <span class="hint">For example: safety, allergies, side effects.</span>
+                <textarea class="auto-resize" placeholder="Type your answer here..."></textarea>
+            </div>
+
+            <div class="question-block">
+                <p>What happens if a company decides NOT to test on animals? How do they make sure their products are safe?</p>
+                <textarea class="auto-resize" placeholder="Type your answer here..."></textarea>
+            </div>
+
+            <div class="question-block">
+                <p>Are the rules for animal testing the same everywhere in the world?</p>
+                <textarea class="auto-resize" placeholder="Type your answer here..."></textarea>
+            </div>
+        </section>
+
+        <section>
+            <h2>5. Data Collection & Field Research</h2>
+            
+            <div class="question-block">
+                <p>How can we measure awareness about animal testing in our school community?</p>
+                <span class="hint">Could you create a survey asking students/teachers to guess if common products are tested on animals, or how many animals are affected annually?</span>
+                <textarea class="auto-resize" placeholder="Brainstorm your survey questions and data collection methods here..."></textarea>
+            </div>
+
+            <div class="question-block">
+                <p>How will you use this data at your exhibition stand?</p>
+                <span class="hint">For example: "We will have iPads at our stand where visitors can take the survey, and we will display the live results on a screen to show the gap in awareness."</span>
+                <textarea class="auto-resize" placeholder="Type your plan for using the data here..."></textarea>
+            </div>
+        </section>
+
+        <section>
+            <h2>6. Shaping the Action & Agency (Responsibility)</h2>
+            
+            <div class="question-block">
+                <p>If your exhibition is incredibly successful, what do you want your audience to do or change?</p>
+                <textarea class="auto-resize" placeholder="Type your answer here..."></textarea>
+            </div>
+
+            <div class="question-block">
+                <p>What is one small, realistic piece of this puzzle we can take action on locally?</p>
+                <span class="hint">We can't solve the whole global problem today, but what can we change in our community?</span>
+                <textarea class="auto-resize" placeholder="Type your answer here..."></textarea>
+            </div>
+        </section>
+
+        <section>
+            <h2>7. Embedding the Wider Learner Profile</h2>
+            
+            <div class="question-block">
+                <p>Which additional Learner Profile attributes will be most critical for your group during this exhibition?</p>
+                <span class="hint">Select 2-3 attributes to focus on as a team (in addition to being Reflective and Open-minded).</span>
+                <div class="profile-grid">
+                    <label class="profile-item"><input type="checkbox"> Inquirers</label>
+                    <label class="profile-item"><input type="checkbox"> Knowledgeable</label>
+                    <label class="profile-item"><input type="checkbox"> Thinkers</label>
+                    <label class="profile-item"><input type="checkbox"> Communicators</label>
+                    <label class="profile-item"><input type="checkbox"> Principled</label>
+                    <label class="profile-item"><input type="checkbox"> Open-minded</label>
+                    <label class="profile-item"><input type="checkbox"> Caring</label>
+                    <label class="profile-item"><input type="checkbox"> Risk-takers</label>
+                    <label class="profile-item"><input type="checkbox"> Balanced</label>
+                    <label class="profile-item"><input type="checkbox"> Reflective</label>
+                </div>
+            </div>
+
+            <div class="question-block">
+                <p>How will you demonstrate these chosen attributes as you research and plan?</p>
+                <span class="hint">For example: "We will be open-minded when reading about why companies use animal testing, even if we disagree."</span>
+                <textarea class="auto-resize" placeholder="Type your plan here..."></textarea>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Auto-resize textareas as the user types so everything is visible for printing/PDF
+        const textareas = document.querySelectorAll('.auto-resize');
+        
+        function resizeTextarea(el) {
+            el.style.height = 'auto';
+            el.style.height = (el.scrollHeight + 2) + 'px';
+        }
+
+        textareas.forEach(textarea => {
+            textarea.addEventListener('input', function() {
+                resizeTextarea(this);
+            });
+            // Initial resize just in case there's pre-filled content
+            resizeTextarea(textarea);
+        });
+    </script>
+</body>
+</html>
